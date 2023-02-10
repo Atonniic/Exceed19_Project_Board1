@@ -14,17 +14,6 @@ void PIR(void *param) {
         if (true) {
             int pir = digitalRead(PIR_pin);
             Serial.println(pir);
-            /*
-            if (pir == 0) { //PIR sensor detects pet
-                pet_in_room = true;
-                timer += 1; //count time
-            }
-            else {
-                pet_in_room = false;
-                //POST to server
-                timer = 0;
-            }
-            */
             delay(300);
         }
     }
