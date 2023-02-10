@@ -1,27 +1,26 @@
-/*
-    BACKEND API
-*/
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-const char *ssid = "Pun-iPhone";
-const char *password = "spiderman";
+extern const char *ssid;
+extern const char *password;
 
 const String baseUrl = "/";
-int room_id = 0;
+
+extern int room_id;
 int count = 0;
 extern time_t timestamp;
 
+extern bool PIR_on;
+
 void connectWifi() {
-  Serial.begin(115200);
-  Serial.printf("Connecting to %s ", ssid);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-      delay(500);
-      Serial.print(".");
-  }
-  Serial.println(" CONNECTED");
+    Serial.printf("Connecting to %s ", ssid);
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print(".");
+    }
+    Serial.println(" CONNECTED");
 }
 
 void POST_pir() {
@@ -37,13 +36,25 @@ void POST_pir() {
     http.addHeader("Content-Type", "application/json");
     int httpCode = http.POST(json);
     if (httpCode > 200 && httpCode <300) {
-        Serial.println("POST OK");
+        Serial.println("POST_pir OK");
     } else {
-        Serial.println("POST ERROR");
+        Serial.println("POST_pir ERROR");
     }
 }
 
-void GET_commands(void *param) {
+void PUT_tank_level() {
+    const String url = baseUrl + String("tank_level") + String(room_id) + String("/") + String(tank_level);
+    HTTPClient http;
+    http.begin(url);
+    int httpCode = http.PUT("");
+    if (httpCode > 200 && httpCode <300) {
+        Serial.println("PUT_tank_level OK");
+    } else {
+        Serial.println("PUT_tank_level ERROR");
+    }
+}
+
+void GET_pir_command(void *param) {
     while (1) {
         const String url = baseUrl + String("getdata/commands/") + String(room_id);
 	    String payload;
@@ -52,25 +63,13 @@ void GET_commands(void *param) {
 	    http.begin(url);
 	    int httpCode = http.GET();
 	    if (httpCode >= 200 && httpCode < 300) {
-	    	Serial.println("GET OK");
+	    	Serial.println("GET_pir_command OK");
 	    	payload = http.getString();
 	    	deserializeJson(doc, payload);
 	    	PIR_on = doc["PIR_on"];
 	    } else {
-	    	Serial.println("GET ERROR");
+	    	Serial.println("GET_pir_command ERROR");
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
-} 
-
-void POST_tank_level() {
-    const String url = baseUrl + String("tank_level") + String(room_id) + String("/") + String(tank_level);
-    HTTPClient http;
-    http.begin(url);
-    int httpCode = http.POST("");
-    if (httpCode > 200 && httpCode <300) {
-        Serial.println("POST OK");
-    } else {
-        Serial.println("POST ERROR");
     }
 }

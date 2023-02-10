@@ -1,30 +1,20 @@
-/*
-    map, POST
-*/
 #include <Arduino.h>
 #include "Define.h"
 
-bool tank_level; //0 -> nothing, 1 -> refill
+bool tank_level = false; // true -> refill needed, false -> refill not needed
 
 void Tank(void *param) {
-    while(1) {
-        //int map_LDR = map(analogRead(LDR_pin), 2000, 4000, 0, 255);
-        if (analogRead(LDR_pin) <= 2500) { //do nothing
-            tank_level = false;
-            //Serial.println(map_LDR);
-            Serial.println(analogRead(LDR_pin));
-            digitalWrite(GREEN_pin, 1);   
-            digitalWrite(RED_pin, 0);
-            //POST_tank_level()
+    digitalWrite(Laser_pin, HIGH);
+    PUT_tank_level();
+    bool last = tank_level;
+    while (1) {
+        tank_level = analogRead(LDR_pin) >= 2500;
+        if (last != tank_level) {
+            digitalWrite(RED_pin, tank_level);
+            digitalWrite(GREEN_pin, !tank_level);
+            PUT_tank_level();
         }
-        else { //refill
-            tank_level = true;
-            //Serial.println(map_LDR);
-            Serial.println(analogRead(LDR_pin));
-            digitalWrite(GREEN_pin, 0);   
-            digitalWrite(RED_pin, 1);  
-            //POST_tank_level() 
-        }
-        delay(300);
+        last = tank_level;
+        vTaskDelay(300 / portTICK_PERIOD_MS);
     }
 }
