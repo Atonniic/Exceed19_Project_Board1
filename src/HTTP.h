@@ -45,7 +45,7 @@ void POST_pir() {
 
 void GET_commands(void *param) {
     while (1) {
-        const String url = baseUrl + "getdata/commands/" + String(room_id);
+        const String url = baseUrl + String("getdata/commands/") + String(room_id);
 	    String payload;
 	    DynamicJsonDocument doc(2048);
 	    HTTPClient http;

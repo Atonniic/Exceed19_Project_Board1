@@ -3,7 +3,6 @@
 */
 #include <Arduino.h>
 #include "Define.h"
-#include <time.h>
 
 // bool pet_active; //True -> pet in room, False -> pet not in room
 bool PIR_on = true; //True-> on, False -> off
