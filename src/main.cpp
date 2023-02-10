@@ -9,6 +9,8 @@
 #define Laser_pin 33
 #define LDR_pin 34
 
+#define LDR_threshold 2500
+
 const int room_id = 0;
 
 const char *ssid = "Pun-iPhone";
@@ -74,7 +76,7 @@ void Tank(void *param) {
     PUT_tank_level();
     bool last = tank_level;
     while (1) {
-        tank_level = analogRead(LDR_pin) >= 2500;
+        tank_level = analogRead(LDR_pin) >= LDR_threshold;
         if (last != tank_level) {
             digitalWrite(RED_pin, tank_level);
             digitalWrite(GREEN_pin, !tank_level);
@@ -103,7 +105,7 @@ void PIR(void *param) {
 }
 
 void PUT_tank_level() {
-    const String url = baseUrl + String("tank_level") + String(room_id) + String("/") + String(tank_level);
+    const String url = baseUrl + String("tank_level/") + String(room_id) + String("/") + String(tank_level);
     HTTPClient http;
     http.begin(url);
     int httpCode = http.PUT("");
