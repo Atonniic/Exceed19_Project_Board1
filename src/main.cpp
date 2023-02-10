@@ -18,7 +18,13 @@ const char *ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = 0;
 const int daylightOffset_sec = 0;
 
+const String baseUrl = "/";
+
 time_t timestamp;
+int count = 0;
+bool pir = false; // true -> pet moved, false -> pet not moved
+bool tank_level = false; // true -> refill needed, false -> refill not needed
+bool PIR_on = true;
 
 void Tank(void *param);
 void PIR(void *param);
@@ -53,9 +59,6 @@ void loop() {
     time(&timestamp);
 }
 
-
-bool tank_level = false; // true -> refill needed, false -> refill not needed
-
 void Tank(void *param) {
     digitalWrite(Laser_pin, HIGH);
     PUT_tank_level();
@@ -71,11 +74,6 @@ void Tank(void *param) {
         vTaskDelay(300 / portTICK_PERIOD_MS);
     }
 }
-
-
-bool PIR_on = true;
-
-bool pir = false; // true -> pet moved, false -> pet not moved
 
 void PIR(void *param) {
     POST_pir();
@@ -94,11 +92,6 @@ void PIR(void *param) {
     }
 }
 
-
-const String baseUrl = "/";
-
-int count = 0;
-
 void connectWifi() {
     Serial.printf("Connecting to %s ", ssid);
     WiFi.begin(ssid, password);
@@ -108,7 +101,6 @@ void connectWifi() {
     }
     Serial.println(" CONNECTED");
 }
-
 
 void POST_pir() {
     const String url = baseUrl + String("timestamp");
@@ -129,7 +121,6 @@ void POST_pir() {
     }
 }
 
-
 void PUT_tank_level() {
     const String url = baseUrl + String("tank_level") + String(room_id) + String("/") + String(tank_level);
     HTTPClient http;
@@ -141,7 +132,6 @@ void PUT_tank_level() {
         Serial.println("PUT_tank_level ERROR");
     }
 }
-
 
 void GET_pir_command(void *param) {
     while (1) {
