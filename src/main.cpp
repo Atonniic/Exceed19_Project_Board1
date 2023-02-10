@@ -3,9 +3,9 @@
 #include <ArduinoJson.h>
 #include <time.h>
 
-#define PIR_pin 27
 #define RED_pin 25
 #define GREEN_pin 26
+#define PIR_pin 27
 #define Laser_pin 33
 #define LDR_pin 34
 
@@ -36,9 +36,9 @@ void GET_pir_command(void *param);
 void setup() {
     Serial.begin(115200);
 
-    pinMode(PIR_pin, INPUT);
     pinMode(RED_pin, OUTPUT);
     pinMode(GREEN_pin, OUTPUT);
+    pinMode(PIR_pin, INPUT);
     pinMode(Laser_pin, OUTPUT);
     pinMode(LDR_pin, INPUT);
 
