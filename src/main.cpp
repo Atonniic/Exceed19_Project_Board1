@@ -1,3 +1,5 @@
+// firmware for board 1 (LED, Tank sensors, PIR)
+
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
@@ -45,8 +47,8 @@ void setup() {
     pinMode(LDR_pin, INPUT);
 
     connectWifi();
-    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 
+    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
     while ((timestamp = time(NULL)) < 120) {
         Serial.println("Waiting for NTP time sync: " + String(timestamp));
         delay(1000);
