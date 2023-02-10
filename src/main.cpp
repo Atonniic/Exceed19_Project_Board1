@@ -22,15 +22,15 @@ const String baseUrl = "/";
 
 time_t timestamp;
 int count = 0;
-bool pir = false; // true -> pet moved, false -> pet not moved
 bool tank_level = false; // true -> refill needed, false -> refill not needed
+bool pir = false; // true -> pet moved, false -> pet not moved
 bool PIR_on = true;
 
+void connectWifi();
 void Tank(void *param);
 void PIR(void *param);
-void connectWifi();
-void POST_pir();
 void PUT_tank_level();
+void POST_pir();
 void GET_pir_command(void *param);
 
 void setup() {
@@ -57,6 +57,16 @@ void setup() {
 
 void loop() {
     time(&timestamp);
+}
+
+void connectWifi() {
+    Serial.printf("Connecting to %s ", ssid);
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print(".");
+    }
+    Serial.println(" CONNECTED");
 }
 
 void Tank(void *param) {
@@ -92,14 +102,16 @@ void PIR(void *param) {
     }
 }
 
-void connectWifi() {
-    Serial.printf("Connecting to %s ", ssid);
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.print(".");
+void PUT_tank_level() {
+    const String url = baseUrl + String("tank_level") + String(room_id) + String("/") + String(tank_level);
+    HTTPClient http;
+    http.begin(url);
+    int httpCode = http.PUT("");
+    if (httpCode > 200 && httpCode <300) {
+        Serial.println("PUT_tank_level OK");
+    } else {
+        Serial.println("PUT_tank_level ERROR");
     }
-    Serial.println(" CONNECTED");
 }
 
 void POST_pir() {
@@ -118,18 +130,6 @@ void POST_pir() {
         Serial.println("POST_pir OK");
     } else {
         Serial.println("POST_pir ERROR");
-    }
-}
-
-void PUT_tank_level() {
-    const String url = baseUrl + String("tank_level") + String(room_id) + String("/") + String(tank_level);
-    HTTPClient http;
-    http.begin(url);
-    int httpCode = http.PUT("");
-    if (httpCode > 200 && httpCode <300) {
-        Serial.println("PUT_tank_level OK");
-    } else {
-        Serial.println("PUT_tank_level ERROR");
     }
 }
 
