@@ -4,9 +4,14 @@
 #include "PIR.h"
 #include "HTTP.h"
 
-int tank_level; //0 -> nothing, 1 -> refill
-bool pet_in_room; //True -> pet in room, False -> pet not in room
+bool tank_level; //0 -> nothing, 1 -> refill
+bool pet_active; //True -> pet in room, False -> pet not in room
 bool PIR_on; //True-> on, False -> off
+
+//server
+int room_id = 0;
+int count = 0;
+int timestamp;
 
 void setup() {
     Serial.begin(115200);
@@ -19,7 +24,6 @@ void setup() {
 
     //xTaskCreatePinnedToCore(PIR, "PIR", 10000, NULL, 1, NULL, 0);
     xTaskCreatePinnedToCore(Tank, "Tank", 10000, NULL, 1, NULL, 0);
-    
     //xTaskCreatePinnedToCore(HTTP, "HTTP", 10000, NULL, 1, NULL, 1);
 }
 
