@@ -3,29 +3,24 @@
 */
 #include <Arduino.h>
 #include "Define.h"
+#include <time.h>
 
-extern bool pet_in_room; //True -> pet in room, False -> pet not in room
-extern bool PIR_on; //True-> on, False -> off
-
-int timer = 0;
+// bool pet_active; //True -> pet in room, False -> pet not in room
+bool PIR_on; //True-> on, False -> off
 
 void PIR(void *param) {
-    while(1) {
-        if (true) {
-            int pir = digitalRead(PIR_pin);
-            Serial.println(pir);
-            /*
-            if (pir == 0) { //PIR sensor detects pet
-                pet_in_room = true;
-                timer += 1; //count time
-            }
-            else {
-                pet_in_room = false;
-                //POST to server
-                timer = 0;
-            }
-            */
-            delay(300);
-        }
+  bool last = false;
+  bool current;
+  while (1) {
+    if (!PIR_on)
+        continue;
+    current = digitalRead(PIR_pin);
+    if (last == false && current == true) {
+      Serial.print("cat moved at time ");
+      Serial.println(timestamp);
+      POST_pir();
     }
+    last = current;
+    vTaskDelay(300/portTICK_PERIOD_MS);
+  }
 }

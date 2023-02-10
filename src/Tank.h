@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "Define.h"
 
-extern bool tank_level; //F -> nothing, T -> refill
+bool tank_level; //0 -> nothing, 1 -> refill
 
 void Tank(void *param) {
     while(1) {
@@ -15,7 +15,7 @@ void Tank(void *param) {
             Serial.println(analogRead(LDR_pin));
             digitalWrite(GREEN_pin, 1);   
             digitalWrite(RED_pin, 0);
-            //POST_tank_level()
+            POST_tank_level()
         }
         else { //refill
             tank_level = true;
@@ -23,7 +23,7 @@ void Tank(void *param) {
             Serial.println(analogRead(LDR_pin));
             digitalWrite(GREEN_pin, 0);   
             digitalWrite(RED_pin, 1);  
-            //POST_tank_level() 
+            POST_tank_level() 
         }
         delay(300);
     }
