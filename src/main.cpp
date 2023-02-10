@@ -4,28 +4,33 @@
 #include "PIR.h"
 #include "HTTP.h"
 
-bool tank_level; //0 -> nothing, 1 -> refill
-bool pet_active; //True -> pet in room, False -> pet not in room
-bool PIR_on; //True-> on, False -> off
+//time
+time_t timestamp;
 
-//server
-int room_id = 0;
-int count = 0;
-int timestamp;
+//ntp
+const char *ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = 0;
+const int daylightOffset_sec = 0;
 
 void setup() {
     Serial.begin(115200);
+
     pinMode(PIR_pin, INPUT);
     pinMode(RED_pin, OUTPUT);
     pinMode(GREEN_pin, OUTPUT);
     pinMode(Laser_pin, OUTPUT);
-    digitalWrite(Laser_pin, HIGH);
-    //connectWifi();
+    pinMode(LDR_pin, INPUT);
 
-    //xTaskCreatePinnedToCore(PIR, "PIR", 10000, NULL, 1, NULL, 0);
+    digitalWrite(Laser_pin, HIGH);
+
+    connectWifi();
+    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+
+    xTaskCreatePinnedToCore(PIR, "PIR", 10000, NULL, 1, NULL, 0);
     xTaskCreatePinnedToCore(Tank, "Tank", 10000, NULL, 1, NULL, 0);
-    //xTaskCreatePinnedToCore(HTTP, "HTTP", 10000, NULL, 1, NULL, 1);
+    //xTaskCreatePinnedToCore(GET_commands, "GET_commands", 10000, NULL, 1, NULL, 1)
 }
 
 void loop() {
+    time(&timestamp);
 }

@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "Define.h"
 
-extern bool tank_level; //F -> nothing, T -> refill
+bool tank_level; //0 -> nothing, 1 -> refill
 
 void Tank(void *param) {
     while(1) {
