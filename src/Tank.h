@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "Define.h"
+#include "HTTP.h"
 
 bool tank_level = false; // true -> refill needed, false -> refill not needed
 

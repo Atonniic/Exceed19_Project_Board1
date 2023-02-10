@@ -11,6 +11,8 @@ extern int room_id;
 int count = 0;
 extern time_t timestamp;
 
+extern bool tank_level;
+
 extern bool PIR_on;
 
 void connectWifi() {
