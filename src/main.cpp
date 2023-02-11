@@ -106,11 +106,11 @@ void PIR(void *param) {
 }
 
 void PUT_tank_level() {
-    const String url = baseUrl + String("tank_level/") + String(room_id) + String("/") + String(tank_level);
+    const String url = baseUrl + String("update/tank_level/") + String(room_id) + String("/") + String(tank_level);
     HTTPClient http;
     http.begin(url);
     int httpCode = http.PUT("");
-    if (httpCode > 200 && httpCode <300) {
+    if (httpCode >= 200 && httpCode <300) {
         Serial.println("PUT_tank_level OK");
     } else {
         Serial.println("PUT_tank_level ERROR");
@@ -129,7 +129,7 @@ void POST_pir() {
     http.begin(url);
     http.addHeader("Content-Type", "application/json");
     int httpCode = http.POST(json);
-    if (httpCode > 200 && httpCode <300) {
+    if (httpCode >= 200 && httpCode <300) {
         Serial.println("POST_pir OK");
     } else {
         Serial.println("POST_pir ERROR");
