@@ -86,7 +86,7 @@ void Tank(void *param) {
             PUT_tank_level();
         }
         last = tank_level;
-        vTaskDelay(300 / portTICK_PERIOD_MS);
+        vTaskDelay(3000 / portTICK_PERIOD_MS);
     }
 }
 
@@ -102,7 +102,7 @@ void PIR(void *param) {
             POST_pir();
         }
         last = pir;
-        vTaskDelay(300 / portTICK_PERIOD_MS);
+        vTaskDelay(3000 / portTICK_PERIOD_MS);
     }
 }
 
@@ -119,7 +119,7 @@ void PUT_tank_level() {
 }
 
 void POST_pir() {
-    const String url = baseUrl + String("timestamp");
+    const String url = baseUrl + String("add_time");
     DynamicJsonDocument doc(2048);
     String json;
     doc["room_id"] = room_id;
@@ -153,6 +153,6 @@ void GET_pir_command(void *param) {
 	    } else {
 	    	Serial.println("GET_pir_command ERROR");
         }
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(3000 / portTICK_PERIOD_MS);
     }
 }
