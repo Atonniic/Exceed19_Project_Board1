@@ -22,7 +22,7 @@ const char *ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = 0;
 const int daylightOffset_sec = 0;
 
-const String baseUrl = "/";
+const String baseUrl = "https://ecourse.cpe.ku.ac.th/exceed12/";
 
 time_t timestamp;
 int count = 0;
