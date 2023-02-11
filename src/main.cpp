@@ -90,7 +90,6 @@ void Tank(void *param) {
 }
 
 void PIR(void *param) {
-    POST_pir();
     bool last = pir;
     while (1) {
         if (!PIR_on)
