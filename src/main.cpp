@@ -46,6 +46,8 @@ void setup() {
     pinMode(Laser_pin, OUTPUT);
     pinMode(LDR_pin, INPUT);
 
+    digitalWrite(Laser_pin, HIGH);
+
     connectWifi();
 
     configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
@@ -74,7 +76,6 @@ void connectWifi() {
 }
 
 void Tank(void *param) {
-    digitalWrite(Laser_pin, HIGH);
     PUT_tank_level();
     bool last = tank_level;
     while (1) {
