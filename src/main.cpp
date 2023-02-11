@@ -11,7 +11,7 @@
 #define Laser_pin 33
 #define LDR_pin 34
 
-#define LDR_threshold 2500
+#define LDR_threshold 3200
 
 const int room_id = 0;
 
