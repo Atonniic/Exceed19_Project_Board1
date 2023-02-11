@@ -15,8 +15,8 @@
 
 const int room_id = 0;
 
-const char *ssid = "";
-const char *password = "";
+const char *ssid = "Pun-iPhone";
+const char *password = "spiderman";
 
 const char *ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = 0;
@@ -76,7 +76,6 @@ void connectWifi() {
 }
 
 void Tank(void *param) {
-    PUT_tank_level();
     bool last = tank_level;
     while (1) {
         tank_level = analogRead(LDR_pin) >= LDR_threshold;
