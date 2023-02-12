@@ -4,6 +4,7 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <time.h>
+#include <TridentTD_LineNotify.h>
 
 #define RED_pin 25
 #define GREEN_pin 26
@@ -12,6 +13,8 @@
 #define LDR_pin 34
 
 #define LDR_threshold 1800
+
+#define LINE_TOKEN "0TwhIgwlAARQMEHJEhWqS6GRwX3UTknLEIxKK1srdyS"
 
 const int room_id = 0;
 
@@ -56,6 +59,8 @@ void setup() {
         delay(1000);
     }
 
+    LINE.setToken(LINE_TOKEN);
+    
     xTaskCreatePinnedToCore(PIR, "PIR", 10000, NULL, 1, NULL, 0);
     xTaskCreatePinnedToCore(Tank, "Tank", 10000, NULL, 1, NULL, 0);
     xTaskCreatePinnedToCore(GET_pir_command, "GET_pir_command", 10000, NULL, 1, NULL, 1);
@@ -83,6 +88,13 @@ void Tank(void *param) {
             digitalWrite(RED_pin, tank_level);
             digitalWrite(GREEN_pin, !tank_level);
             PUT_tank_level();
+            if (tank_level) {
+                LINE.notify("Tank Level: WARNING");
+                LINE.notifyPicture("https://pbs.twimg.com/profile_images/1058485738893918208/F2B-ExKp_400x400.jpg");
+            } else {
+                LINE.notify("Tank Level: GOOD");
+                LINE.notifyPicture("https://i.imgflip.com/1oadne.jpg");
+            }
         }
         last = tank_level;
         vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -101,7 +113,7 @@ void PIR(void *param) {
             POST_pir();
         }
         last = pir;
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(3000 / portTICK_PERIOD_MS);
     }
 }
 
