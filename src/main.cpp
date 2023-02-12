@@ -97,7 +97,7 @@ void Tank(void *param) {
             }
         }
         last = tank_level;
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
 }
 
@@ -113,7 +113,7 @@ void PIR(void *param) {
             POST_pir();
         }
         last = pir;
-        vTaskDelay(3000 / portTICK_PERIOD_MS);
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
 }
 
@@ -164,6 +164,6 @@ void GET_pir_command(void *param) {
 	    } else {
 	    	Serial.println("GET_pir_command ERROR");
         }
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
 }
