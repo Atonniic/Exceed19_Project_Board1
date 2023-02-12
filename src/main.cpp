@@ -104,8 +104,10 @@ void Tank(void *param) {
 void PIR(void *param) {
     bool last = pir;
     while (1) {
-        if (!PIR_on)
+        if (!PIR_on) {
+            vTaskDelay(2000 / portTICK_PERIOD_MS);
             continue;
+        }
         pir = digitalRead(PIR_pin);
         if (last == false && pir == true) {
             Serial.print("pet moved at time ");
