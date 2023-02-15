@@ -1,4 +1,4 @@
-- Tank
-- LED
-- PIR
-- HTTP
+# Hardware 
+- Tank 
+- PIR sensor
+- HTTP (wifi)
