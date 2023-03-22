@@ -14,7 +14,7 @@
 
 #define LDR_threshold 1800
 
-#define LINE_TOKEN "0TwhIgwlAARQMEHJEhWqS6GRwX3UTknLEIxKK1srdyS"
+#define LINE_TOKEN "";
 
 const int room_id = 0;
 
